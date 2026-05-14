@@ -35,16 +35,24 @@ openclaw-skill-tuning/
 ├── README.md                          # 本文件 (速览)
 ├── USAGE.md                           # 完整手把手使用说明
 ├── AGENTS.md                          # ★ 核心: 工作区共享规则
+├── workspace-templates/               # ★ 工作区身份相关文件的中性模板
+│   ├── SOUL.md                        #   - 中性"声音"(指向 active skill)
+│   ├── IDENTITY.md                    #   - 中性"身份"(指向 active skill)
+│   └── USER.md                        #   - 对方档案模板(不绑角色)
 ├── templates/
 │   └── personality-emotional-range-template.md   # 给任意角色加情感谱的模板 + 实例
-└── memory-notes/                      # 6 条调教过程沉淀的设计心法笔记
+└── memory-notes/                      # 8 条调教过程沉淀的设计心法笔记
     ├── feedback_skill_for_weak_model.md
     ├── feedback_skill_template_vs_judgment.md
     ├── feedback_llm_newline_vs_punctuation.md
     ├── feedback_llm_batch_vs_turn.md
     ├── feedback_llm_listener_vs_performer.md
-    └── feedback_llm_full_emotional_range.md
+    ├── feedback_llm_full_emotional_range.md
+    ├── project_openclaw_workspace_identity_files.md   # ★ 必读: 为什么 workspace 文件要中性化
+    └── project_openclaw_weixin_bubble_delivery.md     # 已知问题: 微信端 \n\n 渲染为单消息换行
 ```
+
+> **重要**: 不只是 `AGENTS.md`,还要把 `workspace-templates/` 里的 `SOUL.md`/`IDENTITY.md`/`USER.md` **一起** copy 到你的 workspace 根目录。如果工作区已经有这些文件(典型: 单角色 bot 项目)且硬编码了某个角色身份,**slash 命令推不动**,角色串味。详见 `memory-notes/project_openclaw_workspace_identity_files.md`。
 
 ## 速览: 怎么用
 

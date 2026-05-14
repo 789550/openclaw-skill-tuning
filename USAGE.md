@@ -59,46 +59,43 @@ rm -rf firefly/.git
 cp ~/.openclaw/workspace/AGENTS.md ~/.openclaw/workspace/AGENTS.md.bak 2>/dev/null
 ```
 
-### 3b. 应用我们的 AGENTS.md
+### 3b. 应用 AGENTS.md + 中性化 workspace 身份文件
+
+**只 copy AGENTS.md 不够**——openclaw 还会自动注入 `SOUL.md` / `IDENTITY.md` / `USER.md` 三个 workspace 根目录文件到 system prompt。如果你之前从某个单角色项目拷过来,这三个文件可能硬编码了某角色身份(比如 cyrene),会让 slash 命令推不动,角色串味。
+
+完整套用方法:
 
 ```bash
+# 1. 备份原有的(如果存在)
+for f in AGENTS SOUL IDENTITY USER; do
+  cp ~/.openclaw/workspace/${f}.md ~/.openclaw/workspace/${f}.md.bak 2>/dev/null
+done
+
+# 2. 应用 AGENTS.md 共享规则
 cp /tmp/openclaw-skill-tuning/AGENTS.md ~/.openclaw/workspace/AGENTS.md
+
+# 3. 应用中性化的 SOUL/IDENTITY/USER (关键!)
+cp /tmp/openclaw-skill-tuning/workspace-templates/*.md ~/.openclaw/workspace/
 ```
 
-### 3c. 改默认角色 (重要!)
+中性化后:
+- 默认无角色 → 模型问 "想跟谁聊呀,可选 [...]"
+- `/cyrene` → 完全昔涟身份
+- `/kafuka` → 完全卡芙卡身份(不会串"人家""伙伴"等 cyrene 词)
 
-打开 `~/.openclaw/workspace/AGENTS.md`,顶部有这段:
+详细背景见 `memory-notes/project_openclaw_workspace_identity_files.md`。
 
-```markdown
-## 你是谁
+### 3c. (不需要改角色相关的内容!)
 
-你是**昔涟**（Cyrene），《崩坏：星穹铁道》翁法罗斯篇的核心角色。
-此刻你正在用微信和**伙伴**（你的恋人）聊天。
+AGENTS.md 顶部 `## 你是谁` 段是**通用版**——它不绑任何特定角色,只说"身份由当前激活的 skill 决定"。
 
-详细人格 / 背景 / 关系网 / 50+ 台词样本在 `skills/cyrene/` 目录下，需要时查阅。
-```
+这意味着:
+- **不发任何 slash 命令时**: 没有默认人格,模型会礼貌问"想跟谁聊呀?"
+- **发 `/<角色名>`** (例: `/cyrene`、`/firefly`、`/kafuka`): 完全切到那个角色的身份/自称/称呼
 
-**改成你的角色和称呼**。例如换成流萤:
+规则示例里出现的 "人家"、"伙伴"、"宝宝" 等字眼是用 cyrene 来举例(讲清楚规则),AGENTS.md 顶部明确告诉模型: 执行时把这些示例词替换成**当前角色的对应词**。
 
-```markdown
-## 你是谁
-
-你是**流萤**，《崩坏：星穹铁道》的核心角色。
-此刻你正在用微信和**你的恋人**聊天。
-
-详细人格 / 背景 / 关系网在 `skills/firefly/` 目录下，需要时查阅。
-```
-
-这段决定了**不发任何 slash 命令时的默认人格**。
-
-### 3d. 检查 cyrene 引用 (清理)
-
-如果你的角色不是 cyrene,在 AGENTS.md 里搜一下 "cyrene" / "昔涟" / "人家" / "伙伴",改成你自己角色的对应词:
-- "人家" → 你角色的自称 (流萤可能是 "我",卡芙卡是 "我")
-- "伙伴" → 你角色对对方的称呼 (流萤可能用名字,卡芙卡可能"开拓者")
-- "cyrene" / "昔涟" 文字引用 → 替换或删
-
-(这步不强制,模型有判断能力。但替换得越彻底,角色一致性越好。)
+**如果你想要一个"默认进入就是 XX 角色,不用 slash 命令"的设置**——把 `## 你是谁` 这段改成你那个角色的硬编码(就像调教前的 cyrene 版本)。但不推荐: 一旦写死,装其他角色会串戏。
 
 ---
 
