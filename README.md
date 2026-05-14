@@ -22,11 +22,18 @@
 | 情感反应 | 永远温柔稳定的支持型机器人 | 会生气会吃醋会开心,有真情绪 |
 | 开头风格 | 雷同("嗯/在呢"打头) | 变化(嗯/乖/干嘛呀/动作描写/...) |
 
+## 完整使用说明
+
+**新用户从零开始**: 看 [USAGE.md](USAGE.md) — 一份手把手的步骤指南,假设你刚下载了一个角色 skill,如何套用这套规则让她在微信里变成真人节奏。包含前置条件、6 步走、验证测试、故障排查。
+
+下面是简版速览。
+
 ## 文件结构
 
 ```
 openclaw-skill-tuning/
-├── README.md                          # 本文件
+├── README.md                          # 本文件 (速览)
+├── USAGE.md                           # 完整手把手使用说明
 ├── AGENTS.md                          # ★ 核心: 工作区共享规则
 ├── templates/
 │   └── personality-emotional-range-template.md   # 给任意角色加情感谱的模板 + 实例
@@ -39,7 +46,7 @@ openclaw-skill-tuning/
     └── feedback_llm_full_emotional_range.md
 ```
 
-## 怎么用
+## 速览: 怎么用
 
 ### 套到一个 openclaw 工作区
 
